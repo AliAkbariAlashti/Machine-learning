@@ -27,7 +27,7 @@ Clone the repository:
 
 bash
 Copy code
-git clone https://github.com/yourusername/machine-learning.git
+git clone https://github.com/20ali05/Machine-learning.git
 cd machine-learning
 Install the required dependencies:
 

@@ -1,0 +1,6 @@
+pandas
+pyodbc
+numpy
+seaborn
+matplotlib
+mlxtend

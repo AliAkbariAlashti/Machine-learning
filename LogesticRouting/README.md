@@ -1,84 +1,113 @@
-Vehicle Routing and Order Assignment System
-Overview
-This project is a Python-based vehicle routing and order assignment system designed to optimize the allocation of orders to vehicles based on weight, volume, and location constraints. The system supports multiple types of vehicles (normal, coolbox, freezer) and handles mixed orders requiring multiple vehicle types. It uses the OR-Tools library for solving the bin-packing problem to assign orders to vehicles efficiently. Additionally, it includes a destination prioritization feature to minimize travel distance based on Euclidean distances from a central warehouse.
-Features
+Sure! Here's a clean, well-formatted, and professional-looking **README** in English for your GitHub or documentation:
 
-Order Assignment: Assigns orders to vehicles based on weight and volume constraints, ensuring optimal use of vehicle capacities.
-Cluster-Based Allocation: Groups orders by clusters to streamline vehicle assignments.
-Mixed Order Handling: Supports mixed orders requiring both normal and coolbox or freezer and coolbox vehicles.
-Destination Prioritization: Prioritizes delivery order based on minimizing travel distance from the warehouse (coordinates: 35.73822816917282, 51.05946023574787) using a greedy algorithm.
-Empty DataFrame Handling: Gracefully handles empty input DataFrames to prevent errors.
-JSON Output: Generates detailed JSON output summarizing assignments, unassigned orders, and unassignable orders due to capacity constraints.
+---
 
-Prerequisites
+# 🚚 Vehicle Routing and Order Assignment System
 
-Python: Version 3.8 or higher
-Dependencies:
-pandas
-numpy
-ortools
-scipy
+This is a **Python-based optimization system** designed to assign customer orders to vehicles efficiently based on **weight**, **volume**, **location**, and **vehicle type** constraints. The system supports multiple vehicle types and uses **Google OR-Tools** for solving the bin-packing problem, with destination prioritization based on **Euclidean distance** from a central warehouse.
 
+---
 
-Operating System: Compatible with Windows, macOS, or Linux.
+## 📦 Features
 
-Installation
+* **Order Assignment**
+  Efficiently assigns orders to vehicles based on weight and volume, maximizing vehicle utilization.
 
-Clone or Download the Repository:
+* **Cluster-Based Allocation**
+  Groups orders by clusters to streamline routing and assignment.
+
+* **Mixed Order Handling**
+  Supports orders requiring multiple vehicle types (e.g., normal + coolbox, freezer + coolbox).
+
+* **Destination Prioritization**
+  Orders are sorted using a **greedy algorithm** to minimize travel distance from the warehouse:
+
+* **Robust to Empty Inputs**
+  Handles empty DataFrames gracefully to avoid crashes.
+
+* **JSON Output**
+  Generates detailed, structured JSON output with assignment summaries and Persian character support.
+
+---
+
+## ✅ Prerequisites
+
+* **Python**: 3.8 or higher
+* **Dependencies**:
+
+  * `pandas`
+  * `numpy`
+  * `ortools`
+  * `scipy`
+
+---
+
+## 💻 Installation
+
+```bash
+# Clone the repository
 git clone <repository-url>
 cd <repository-folder>
 
-
-Install Dependencies:Create a virtual environment (optional but recommended) and install the required packages:
+# Create and activate virtual environment (optional but recommended)
 python -m venv venv
-source venv/bin/activate  # On Windows: venv\Scripts\activate
+# For macOS/Linux:
+source venv/bin/activate
+# For Windows:
+venv\Scripts\activate
+
+# Install dependencies
 pip install pandas numpy ortools scipy
+```
 
+---
 
-Prepare Input Data:Ensure you have the following CSV files or equivalent DataFrames:
+## 📂 Input Data Structure
 
-usl_table.csv: Orders for normal and mixed normal-coolbox categories.
-friz_table.csv: Orders for freezer and mixed freezer-coolbox categories.
-usl_car.csv: Normal vehicle details (Name, Plaque, MaxWeight, Car_volume).
-col_box.csv: Coolbox vehicle details.
-friz_car.csv: Freezer vehicle details.
+Place the following CSV files in the project directory (or prepare them as DataFrames):
 
-Each order DataFrame should include columns:
+### 🚚 Vehicle Files
 
-AccountOrderShopResellerID: Unique order ID.
-BuyerName: Name of the buyer.
-CategoryType: Type of order.
-TotalWeight, TotalVolume: For normal orders.
-NormalWeight, NormalVolume, CoolBoxWeight, CoolBoxVolume, FreezerWeight, FreezerVolume: For mixed orders.
-Latitude, Longitude: Coordinates of the delivery location.
-Cluster: Cluster ID for grouping orders.
+| File Name      | Description             |
+| -------------- | ----------------------- |
+| `usl_car.csv`  | Normal vehicle details  |
+| `col_box.csv`  | Coolbox vehicle details |
+| `friz_car.csv` | Freezer vehicle details |
 
+### 📦 Order Files
 
+| File Name        | Description                                    |
+| ---------------- | ---------------------------------------------- |
+| `usl_table.csv`  | Orders for normal/mixed normal-coolbox types   |
+| `friz_table.csv` | Orders for freezer/mixed freezer-coolbox types |
 
-Usage
+### 📑 Order Columns
 
-Run the Script:Place the input CSV files in the project directory and run the main script:
+All order tables should include:
+
+* `AccountOrderShopResellerID`: Unique order ID
+* `BuyerName`: Customer name
+* `CategoryType`: Order category
+* `TotalWeight`, `TotalVolume`
+* `NormalWeight`, `NormalVolume`, `CoolBoxWeight`, `CoolBoxVolume`, `FreezerWeight`, `FreezerVolume` (for mixed orders)
+* `Latitude`, `Longitude`: Delivery location
+* `Cluster`: Cluster ID for grouping
+
+---
+
+## 🚀 Usage
+
+```bash
+# Run the main script
 python main.py
+```
 
+### 📤 Output
 
-Output:The script generates a JSON output (result) containing:
+* Printed to console as JSON (UTF-8, Persian supported)
+* Output structure includes:
 
-allocation_summary: Summary of total orders, allocated orders, unassigned orders, unassignable orders, and processed clusters.
-normal_assignments, coolbox_assignments, friz_assignments, coolbox_friz_assignments: Vehicle assignments with order details and delivery priority.
-mixed_normal_coolbox_assignments, mixed_friz_coolbox_assignments: Assignments for mixed orders with priority.
-unassignable_orders, unassigned_orders: Orders that could not be assigned due to capacity or availability constraints.
-
-The output is printed to the console in JSON format with Persian characters supported.
-
-Priority Assignment:
-
-Orders are prioritized based on Euclidean distance from the warehouse (35.73822816917282, 51.05946023574787).
-For each vehicle, orders are sorted using a greedy algorithm to minimize total travel distance.
-A priority field is added to each order in the output, indicating the delivery sequence (starting from 1).
-
-
-
-Example Output
+```json
 {
   "allocation_summary": {
     "allocation_date": "2025-05-31",
@@ -116,23 +145,34 @@ Example Output
         }
       ]
     }
-  ],
-  ...
+  ]
 }
+```
 
-Notes
+---
 
-Empty DataFrames: The script handles empty input DataFrames gracefully, returning empty assignments and logging a message.
-Distance Calculation: Uses Euclidean distance for prioritization. For real-world road distances, consider integrating an API like Google Maps Distance Matrix.
-Optimization: The greedy algorithm for prioritization is simple and may not always yield the globally optimal route. For larger datasets, consider using OR-Tools' Vehicle Routing Problem solver.
-Data Validation: Ensure input coordinates and weights/volumes are valid to avoid runtime errors.
+## 🧠 Notes
 
-Future Improvements
+* **Empty DataFrames**: Returns empty assignments with warning logs.
+* **Distance Calculation**: Uses simple Euclidean formula. For realistic distances, consider Google Maps API.
+* **Greedy Algorithm**: Prioritization is fast but not always optimal for large datasets.
+* **Data Validation**: Ensure input files have valid coordinates and values.
 
-Integrate real-time road distance calculations using an external API.
-Implement advanced routing algorithms (e.g., VRP) for optimal path planning.
-Add validation for input data to handle missing or invalid values.
-Support additional constraints like time windows or vehicle availability schedules.
+---
 
-Contact
-For questions or contributions, please contact [Your Contact Information].
+## 🔮 Future Improvements
+
+* Integrate real-world distance APIs (e.g., Google Distance Matrix)
+* Use advanced routing algorithms (e.g., VRP via OR-Tools)
+* Add input validation and error handling
+* Support time windows, driver shifts, and other real-world logistics constraints
+
+---
+
+## 📬 Contact
+
+For questions, bug reports, or contributions, please contact:
+
+**\[Ali Akbari Alashti]**
+✉️ \[ali.akbari.alashti84@gmail.com]
+

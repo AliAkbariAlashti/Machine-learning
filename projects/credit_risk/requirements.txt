@@ -1,0 +1,17 @@
+numpy
+pandas
+scikit-learn>=1.6
+xgboost
+lightgbm
+catboost
+shap
+mlflow
+fastapi
+uvicorn
+httpx
+pytest
+statsmodels
+matplotlib
+pydantic
+joblib
+apache-airflow  # optional, only needed to run dags/
